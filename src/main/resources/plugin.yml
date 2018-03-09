@@ -1,0 +1,6 @@
+name: GrandioseAPI
+main: com.robomwm.grandioseapi.GrandioseAPI
+version: ${project.version}
+author: RoboMWM
+description: A fat, grand API that really desires you to PR your API desires.
+website: https://github.com/MLG-Fortress/GrandioseAPI
