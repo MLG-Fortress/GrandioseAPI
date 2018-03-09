@@ -25,6 +25,7 @@ public class GrandPlayer
 
     GrandPlayer(JavaPlugin plugin, OfflinePlayer offlinePlayer)
     {
+        this.plugin = plugin;
         this.offlinePlayer = offlinePlayer;
         yaml = UsefulUtil.loadOrCreateYamlFile(plugin, "grandPlayers" + File.separator + offlinePlayer.getUniqueId().toString());
     }
