@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created on 3/8/2018.
@@ -18,10 +19,11 @@ public class GrandPlayerManager
 {
     private JavaPlugin plugin;
     private long autoSaveInterval;
-    private Map<OfflinePlayer, GrandPlayer> grandPlayers = new HashMap<>();
+    private Map<UUID, GrandPlayer> grandPlayers = new HashMap<>();
 
     public GrandPlayerManager(JavaPlugin plugin)
     {
+        this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
 
         ConfigurationSection grandSection = config.getConfigurationSection("grandPlayer");
@@ -55,8 +57,15 @@ public class GrandPlayerManager
 
     public GrandPlayer getGrandPlayer(OfflinePlayer player)
     {
-        if (!grandPlayers.containsKey(player))
-            grandPlayers.put(player, new GrandPlayer(plugin, player));
-        return grandPlayers.get(player);
+        return getGrandPlayer(player.getUniqueId());
     }
+
+    public GrandPlayer getGrandPlayer(UUID uuid)
+    {
+        if (!grandPlayers.containsKey(uuid))
+            grandPlayers.put(uuid, new GrandPlayer(plugin, plugin.getServer().getOfflinePlayer(uuid)));
+        return grandPlayers.get(uuid);
+    }
+
+
 }

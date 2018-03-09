@@ -34,6 +34,11 @@ public class GrandPlayer
         return offlinePlayer;
     }
 
+    public UUID getUUID()
+    {
+        return offlinePlayer.getUniqueId();
+    }
+
     public YamlConfiguration getYaml()
     {
         return yaml;
