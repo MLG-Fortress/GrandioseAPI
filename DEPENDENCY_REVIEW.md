@@ -36,6 +36,32 @@ Based on direct checks of repository manifests/build files and source references
    - Checked representative sibling plugins (e.g., DeathSpectating, PrettySimpleShop, BetterTPA, RecipeBook, MultiGenerator) and did not find direct `GrandioseAPI` dependency markers in inspected files.
    - Because anonymous GitHub code search is restricted, this review is strong but not mathematically exhaustive across every file in every org repository.
 
+## Can plugins share state without sharing a plugin dependency?
+
+Yes.
+
+Common patterns:
+- **External shared store** (SQL/Redis): both plugins write/read same schema. No plugin-to-plugin runtime dependency.
+- **Shared file contract** (YAML/JSON): both plugins read/write same file path + schema. Cheap but fragile unless schema/versioning is strict.
+- **Bukkit Services API**: one plugin registers service interface at runtime; consumer plugin uses service lookup. Consumer can avoid hard `depend` and only use `softdepend` + runtime checks.
+- **Plugin messaging/events**: exchange data on demand; persistence still needs file/DB/PDC backing somewhere.
+
+So yes: state sharing does **not** require shipping a separate API plugin JAR as a hard dependency.
+
+## Is PDC the right way?
+
+**For single-plugin owned player metadata:** yes, usually best first choice.
+
+**For cross-plugin shared state:** maybe, with caveats:
+- PDC is attached to Bukkit holders (player/entity/item/chunk/world), not a general-purpose server database.
+- Data visibility across plugins depends on agreeing on key format and holder lifecycle.
+- For offline/global queries, SQL/YAML is often simpler than forcing holder loads.
+- PDC is good for lightweight metadata tied to holder lifecycle; less good for broad analytics/reporting or complex joins.
+
+Practical guidance:
+- If only MountainDewritoes uses name color: move to PDC (or local YAML) in MountainDewritoes.
+- If multiple plugins must share and query this data: use SQL (or a well-defined shared storage contract) plus optional service facade.
+
 ## Can this be implemented better with less complexity?
 
 Yes. For current observed usage (name color persistence), a simpler path exists.
