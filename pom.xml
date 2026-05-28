@@ -65,10 +65,9 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>26.1.2.build.18-alpha</version>
-            <type>jar</type>
+            <version>[26.1.2.build,)</version>
             <scope>provided</scope>
-        </dependency>
+</dependency>
         <dependency>
             <groupId>com.github.RoboMWM</groupId>
             <artifactId>UsefulUtil</artifactId>
